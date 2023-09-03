@@ -1,4 +1,4 @@
-import {Link} from '@remix-run/react'
+import {Link, useNavigate} from '@remix-run/react'
 import ExpenseRecordForm from '~/component/expenses/ExpenseForm'
 import Modal from '../component/util/Modal';
 export default function ExpenseAddIndex(){
