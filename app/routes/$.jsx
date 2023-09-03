@@ -1,7 +1,16 @@
 import { Response } from "@remix-run/node";
-import { redirect } from "react-router"
+import { redirect, useLoaderData } from "react-router"
 import { json } from "stream/consumers";
 
+
+
+export default function NotFoundIndex(){
+
+    
+    const errorNotFound = useLoaderData();
+    console.log(errorNotFound);
+    return(<h1>{errorNotFound?.message && errorNotFound.message }</h1>);
+}
 
 
 export function loader({params}){
@@ -10,6 +19,6 @@ export function loader({params}){
     if(params['*'] === 'exp'){
         return redirect('/expenses');
     }
-    throw new Response('404 page not found',{status:404})
+    return {message:'404 page not found',status:404};
    
 }
