@@ -1,12 +1,19 @@
-import {Link} from '@remix-run/react'
 
-export default function RawIndex(){
-    return(
-        <>
-        <h1>Route</h1>
-        <h2>Expense Raw</h2>
+const Expense_Dummy = [
+    {
+        id:'e-1',
+        title:'Income one',
+        amount:123.30,
+        date:new Date().toISOString()
+    },
+    {
+        id:'e-2',
+        title:'Income two',
+        amount:13.30,
+        date:new Date().toISOString()
+    }
+];
 
-        <Link to='/'>back</Link>
-    </>
-    );
+export function loader(){
+    return Expense_Dummy;
 }
