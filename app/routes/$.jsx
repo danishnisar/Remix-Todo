@@ -10,6 +10,6 @@ export function loader({params}){
     if(params['*'] === 'exp'){
         return redirect('/expenses');
     }
-    return new Response('404 page not found',{status:404})
+    throw new Response('404 page not found',{status:404})
    
 }
