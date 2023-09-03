@@ -10,7 +10,6 @@ import {
 } from "@remix-run/react";
 
 import styles from '~/styles/shared.css'
-import HeaderNav from '~/component/navigation/MainHeader';
 export const links = () => [
   ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
   {rel:'stylesheet',href:styles},
@@ -29,9 +28,6 @@ export default function App() {
         <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet" />
       </head>
       <body>
-        <header>
-        <HeaderNav/>
-        </header>
         <Outlet />
         <ScrollRestoration />
         <Scripts />

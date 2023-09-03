@@ -1,8 +1,14 @@
 import { Outlet } from "@remix-run/react";
 import MarketingStyles from '~/styles/marketing.css';
+import MainHeader from "../component/navigation/MainHeader";
 
 export default function MarketingPathlessRoute(){
-    return <Outlet/>
+    return(
+        <>
+        <MainHeader/>
+        <Outlet/>
+        </>
+    );
 }
 
 export function links(){
