@@ -10,7 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Expense {
+model expense {
   id       String    @id @default(auto()) @map("_id") @db.ObjectId
   title String
   amount Float
