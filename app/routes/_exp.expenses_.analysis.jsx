@@ -1,33 +1,22 @@
 import Chart from '~/component/expenses/Chart'
 import ExpenseStatistics from '~/component/expenses/ExpenseStatistics'
+import { getExpenses } from '../data/expense.server';
+import { useLoaderData } from '@remix-run/react';
 // import styles from '~/styles/expenses.css'
 
-const Dummy_Expenses = [
-    {
-        id:'e-1',
-        title:'First Expense',
-        amount:12.99,
-        date:new Date().toISOString(),
-    },
-    {
-        id:'e-2',
-        title:'Secound Expense',
-        amount:19.99,
-        date:new Date().toISOString(),
-    }
 
-];
 
 
 export default function AnalysisIndex(){
+    const Expense_Data = useLoaderData();
     return (
         <main>
-            <Chart expenses={Dummy_Expenses}/>
-            <ExpenseStatistics expenses={Dummy_Expenses}/>
+            <Chart expenses={Expense_Data}/>
+            <ExpenseStatistics expenses={Expense_Data}/>
         </main>
     );
 }
 
-// export function links(){
-//     return [{rel:'stylesheet',href:styles}];
-// }
+export function loader(){
+    return getExpenses();
+}
