@@ -1,6 +1,7 @@
 import {Link, useNavigate} from '@remix-run/react'
 import ExpenseRecordForm from '~/component/expenses/ExpenseForm'
 import Model from '~/component/util/Modal'
+import { getExpensById } from '../data/expense.server';
 export default function ExpenseDynamicIndex(){
     const navigate = useNavigate();
 
@@ -16,4 +17,11 @@ export default function ExpenseDynamicIndex(){
     );
     
 
+}
+
+
+export async function loader({params}){
+    const expenseId = params.id;
+    const expenseIdRecord = await getExpensById(expenseId);
+    return expenseIdRecord
 }
