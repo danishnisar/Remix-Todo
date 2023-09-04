@@ -8,7 +8,7 @@ function amountValidation(value){
 }
 
 function dateValidation(value){
-    return value && new Date(value).getTime() < new Date().getTime
+    return value && new Date(value).getTime() <= new Date().getTime()
 }
 
 export function ValidationCheck(input){
