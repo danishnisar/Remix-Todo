@@ -38,6 +38,6 @@ export async function action({request}){
 
     await AddExpense(expenseData);
     
-    return redirect('/expense')
+    return redirect('/expenses')
 
 }
