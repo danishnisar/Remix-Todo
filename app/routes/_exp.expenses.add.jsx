@@ -2,6 +2,8 @@ import {Link, useNavigate} from '@remix-run/react'
 import ExpenseRecordForm from '~/component/expenses/ExpenseForm'
 import Modal from '../component/util/Modal';
 import { AddExpense } from '../data/expense.server';
+import { ValidationCheck } from '../data/errorValidation.server';
+import { redirect } from '@remix-run/node';
 
 
 export default function ExpenseAddIndex(){
@@ -25,9 +27,17 @@ export async function action({request}){
     
     let data = await request.formData();
     const expenseData = Object.fromEntries(data);
-    console.log('log',expenseData);
-    const isError = await AddExpense(expenseData);
-    console.log('log-db',isError);
-    return null
+    try{
+        ValidationCheck(expenseData)
+    }catch(error){
+        console.log('validationError',error);
+        return error;
+    }
+    
+        
+
+    await AddExpense(expenseData);
+    
+    return redirect('/expense')
 
 }
