@@ -19,6 +19,7 @@ export function loader({params}){
     if(params['*'] === 'exp'){
         return redirect('/expenses');
     }
-    return {message:'404 page not found',status:404};
+    throw new Response("Page not found",{status:404,statusText:"Use valid route"})
+    // return {message:'404 page not found',status:404};
    
 }
