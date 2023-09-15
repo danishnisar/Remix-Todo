@@ -1,5 +1,6 @@
 import { cssBundleHref } from "@remix-run/css-bundle";
 
+
 import {
   Links,
   LiveReload,
@@ -14,7 +15,7 @@ import {
 import styles from '~/styles/shared.css'
 export const links = () => [
   ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
-  {rel:'stylesheet',href:styles},
+  { rel: 'stylesheet', href: styles },
 ];
 
 export default function App() {
@@ -34,17 +35,18 @@ export default function App() {
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
+      
       </body>
     </html>
   );
 }
 
 
-export function ErrorBoundary(){
-const error = useRouteError();
+export function ErrorBoundary() {
+  const error = useRouteError();
 
-  if(isRouteErrorResponse(error)){
-    return(
+  if (isRouteErrorResponse(error)) {
+    return (
       <div>
         <h1>
           {error.status} {error.statusText}
@@ -52,7 +54,7 @@ const error = useRouteError();
         <p>{error.data}</p>
       </div>
     );
-  }else if (error instanceof Error) {
+  } else if (error instanceof Error) {
     return (
       <div>
         <h1>Error</h1>
