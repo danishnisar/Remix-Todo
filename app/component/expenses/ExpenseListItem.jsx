@@ -1,15 +1,15 @@
-import { Form, Link,useNavigate } from "@remix-run/react";
-import { deleteExpenseById } from "../../data/expense.server";
+import { Form, Link, useSubmit } from "@remix-run/react";
+
 
 function  ExpenseListItem({id, title, amount,date }) {
 
-  const navigate = useNavigate()
- 
-  async  function deleteExpenseItemHandler(){
-    const idd = id
-    const result =  await deleteExpenseById(idd);
-      console.log(result,'deleteResult');
-      navigate('..');
+
+ const submitDelete = useSubmit();
+  async function deleteExpenseItemHandler(){
+    submitDelete(null,{
+      method:'DELETE',
+      action:`/expenses/${id}`
+    });
   }
 
   return (
@@ -20,10 +20,10 @@ function  ExpenseListItem({id, title, amount,date }) {
         <sub>{new Date(date).toISOString().slice(0,10)}</sub>
       </div>
       <menu className="expense-actions">
-        {/* <button onClick={deleteExpenseItemHandler}>Delete</button> */}
-        <Form method="DELETE" action={`/expenses/${id}`}>
+        <button onSubmit={deleteExpenseItemHandler}>Delete</button>
+        {/* <Form method="DELETE" action={`/expenses/${id}`}>
         <button>Delete</button>
-        </Form>
+        </Form> */}
         <Link to={id}>Edit</Link>
       </menu>
     </article>
