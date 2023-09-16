@@ -1,8 +1,15 @@
 import {Link, useNavigate} from '@remix-run/react'
 import ExpenseRecordForm from '~/component/expenses/ExpenseForm'
 import Model from '~/component/util/Modal'
-import { getExpensById } from '../data/expense.server';
+import { deleteExpenseById, getExpensById, updateExpenseById } from '../data/expense.server';
+import { ValidationCheck } from '../data/errorValidation.server';
+import { redirect } from '@remix-run/node';
+
+
+
+
 export default function ExpenseDynamicIndex(){
+   
     const navigate = useNavigate();
 
     function CloseHandler(){
@@ -12,6 +19,7 @@ export default function ExpenseDynamicIndex(){
         <main>
             <Model onClose={CloseHandler}>
                 <ExpenseRecordForm/>
+               
             </Model>
         </main>
     );
@@ -20,8 +28,37 @@ export default function ExpenseDynamicIndex(){
 }
 
 
-export async function loader({params}){
-    const expenseId = params.id;
-    const expenseIdRecord = await getExpensById(expenseId);
-    return expenseIdRecord
+// export async function loader({params}){
+//     const expenseId = params.id;
+//     const expenseIdRecord = await getExpensById(expenseId);
+//     return expenseIdRecord
+// }
+
+
+export async function action({request,params}){
+
+    const idD = params.id 
+
+    if(request.method === 'PATCH'){
+        let data = await request.formData();
+        let parsData = Object.fromEntries(data);
+        parsData['id'] = idD
+        console.log(parsData);
+        try{
+            ValidationCheck(parsData);
+        }catch(error){
+            console.log('validationError',error);
+            return error;
+        }
+    await updateExpenseById(parsData);
+   
+    }else if(request.method === 'DELETE'){
+       await deleteExpenseById(idD);
+     
+    }else{
+
+    }
+
+    return redirect('/expenses')
+
 }
