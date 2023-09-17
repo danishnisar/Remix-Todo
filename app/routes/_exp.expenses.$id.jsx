@@ -3,7 +3,7 @@ import ExpenseRecordForm from '~/component/expenses/ExpenseForm'
 import Model from '~/component/util/Modal'
 import { deleteExpenseById, getExpensById, updateExpenseById } from '../data/expense.server';
 import { ValidationCheck } from '../data/errorValidation.server';
-import { redirect } from '@remix-run/node';
+import { Response, redirect } from '@remix-run/node';
 
 
 
@@ -51,14 +51,13 @@ export async function action({request,params}){
             return error;
         }
     await updateExpenseById(parsData);
-   
+    return redirect('/expenses')
     }else if(request.method === 'DELETE'){
        await deleteExpenseById(idD);
-     
-    }else{
-
+       return {'Deleted':idD};
+    //    return redirect('/expenses')
     }
 
-    return redirect('/expenses')
+   
 
 }
