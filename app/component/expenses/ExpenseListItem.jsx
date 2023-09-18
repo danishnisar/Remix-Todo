@@ -15,15 +15,18 @@ function  ExpenseListItem({id, title, amount,date }) {
         method:'DELETE',
         action:`/expenses/${id}`
     })
+
   }
 
   if (fetcher.state !== 'idle'){
+    console.log(fetcher);
     return (
       <article className="expense-item locked">
         <p>
-          {Object.values(fetcher.data).map((error) => (
+        
+          {/* {fetcher.data && Object.values(fetcher.data).map((error) => (
             <span key={error}>{error}</span>
-          ))}
+          ))} */}
           Deleting....</p>
       </article>
     );
