@@ -9,8 +9,8 @@ export default function Index() {
 
 
 export async function action({request}){
-  const searchParams = new URL(request.URL).searchParams
-  const AuthMode = searchParams.get('mode') || 'login'
+  const searchParams = new URL(request.url).searchParams
+  const AuthMode = searchParams.get('model') || 'login'
 
   const formData = await request.formData();
   const formParsData = Object.fromEntries(formData);

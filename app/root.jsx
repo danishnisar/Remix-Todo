@@ -56,19 +56,20 @@ export function ErrorBoundary() {
 
   if (isRouteErrorResponse(error)) {
     return (
-      <Document title={error.statusText}>
+      <Document title={`${error.statusText} | ${error.status}`}>
       <ErrorMessage title={error.statusText}>
-        <p>{error.status}</p>
-        <p>{error.data?.message || 'Something went wrong'}</p>
+        
+        {console.log(error)}
+        <p>{`${error.status} | ${error.data || 'Something went wrong'}`}</p>
       </ErrorMessage>
     </Document>
     );
   } else if (error instanceof Error) {
     return (
-      <Document title={error.statusText}>
-      <ErrorMessage title={error.statusText}>
-        <p>{error.status}</p>
-        <p>{error.data?.message || 'Something went wrongs'}</p>
+      <Document title={error.name}>
+      <ErrorMessage title={error.name}>
+      {console.log(error)}
+        <p>{error?.message || 'Something went wrongs'}</p>
       </ErrorMessage>
     </Document>
     );
