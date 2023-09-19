@@ -38,7 +38,9 @@ export function ErrorBoundary(){
     if(isRouteErrorResponse(error)) {
         return(
             <main>
-                <p>{error.status} {error.statusText}</p>
+                 <Error title={error.statusText}>
+                    <p>{error.data?.message || 'Not having data for analyzing'}</p>
+                </Error>
             </main>
         );
     }
