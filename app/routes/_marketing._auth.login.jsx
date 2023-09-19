@@ -1,7 +1,7 @@
 import Login from '~/component/auth/AuthForm';
 import styles from '~/styles/auth.css'
 import { ValidateCredentials } from '../data/errorValidation.server';
-import { signup } from '../data/auth.server';
+import { signup, singin } from '../data/auth.server';
 import { redirect } from '@remix-run/node';
 export default function Index() {
   return (
@@ -27,24 +27,20 @@ export async function action({ request }) {
     return error
   }
 
-  try{
+  try {
     if (AuthMode == 'login') {
-      console.log('Login');
-      return null;
+      return await singin(formParsData);
     } else {
-      console.log('singup');
-  
-      await signup(formParsData);
-      return redirect('/expenses')
+      return await signup(formParsData);
     }
-  }catch(error){
-    if(error.status === 422){
-      return {message:error.message}
+  } catch (error) {
+    if (error.status === 422) {
+      return { message: error.message }
     }
-    
+
   }
 
-  
+
 
 }
 
