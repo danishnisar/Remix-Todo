@@ -1,9 +1,10 @@
 import { FaLock,FaUserPlus } from 'react-icons/fa';
 import { Link, useSearchParams } from 'react-router-dom';
-import { useNavigation,Form } from '@remix-run/react';
+import { useNavigation,Form, useActionData } from '@remix-run/react';
 
 function AuthForm() {
 
+  const errorValidation = useActionData();
   const navigation = useNavigation();
   let [searchParams] = useSearchParams();
 
@@ -13,7 +14,7 @@ function AuthForm() {
   let toggleButtonCaption = authMode === 'login' ? 'Log in with existing user' : 'Create new user';
 
   const isSubmiting = navigation.state !== 'idle'
-
+  
   return (
     <Form method="post" className="form" id="auth-form">
       <div className="icon-img">
@@ -28,6 +29,14 @@ function AuthForm() {
         <label htmlFor="password">Password</label>
         <input type="password" id="password" name="password" minLength={7} />
       </p>
+      {errorValidation && (
+        <ul>
+          {Object.values(errorValidation).map((error) => (
+            <li key={error}>{error}</li>
+          ))}
+          
+        </ul>
+      )}
       <div className="form-actions">
         <button disabled={isSubmiting }>{isSubmiting ? 'Authenticating...' : submitButtonCaption}</button>
         <Link to={authMode === 'login' ? '?model=signup':'?model=login'}>{toggleButtonCaption}</Link>
