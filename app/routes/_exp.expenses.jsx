@@ -10,7 +10,7 @@ export default function Index(){
     
 
     const Expense_Data = useLoaderData();
-
+    const hasExpense = Expense_Data && Expense_Data.length > 0
     return(
         <>
             <Outlet/>
@@ -29,8 +29,12 @@ export default function Index(){
                 </section>
 
              
-                <ExpensesList expenses={Expense_Data} />
-               
+                {hasExpense && <ExpensesList expenses={Expense_Data} />}
+                {!hasExpense && <section id='no-expenses'>
+                    <p>No Expenses found</p>
+                    <p>Start <Link to='add'>add something</Link> today</p>
+                    </section>
+                    }
             </main>
 
         </>
@@ -38,9 +42,9 @@ export default function Index(){
 }
 
 
-export function loader(){
+export async function loader(){
 
-    return getExpenses();
-
+    const expense = await getExpenses();
+    return expense
 }
 

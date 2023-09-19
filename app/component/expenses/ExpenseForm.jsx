@@ -5,16 +5,22 @@ function ExpenseForm() {
   const dataValidation = useActionData();
   // const expenseIdRecord = useLoaderData();
   const params = useParams();
+  const useNavigations = useNavigation();
   const expenseIdRecord = useMatches();
+  const isSubmitting = useNavigations.state !== 'idle';
   // console.log(expenseIdRecord)
   const expenseIDRecordFinal = expenseIdRecord.find((routeData) => routeData.id === 'routes/_exp.expenses').data.find(exactExpense => exactExpense.id === params.id);
   console.log(expenseIDRecordFinal)
   // const expenseOnlyParamRecord = expenseIDRecordFinal.find(exactExpense => exactExpense.id === params.id);
   // console.log(expenseOnlyParamRecord, 'expenseOnlyParamRecord')
 
+  if(params.id && !expenseIDRecordFinal){
+    return(
+      <p>Invalid expense id.</p>
+    );
+  }
   const today = new Date().toISOString().slice(0, 10); // yields something like 2023-09-10
-  const useNavigations = useNavigation();
-  const isSubmitting = useNavigations.state !== 'idle';
+
 
   const defaultValues = expenseIDRecordFinal ? {
     title: expenseIDRecordFinal.title,
