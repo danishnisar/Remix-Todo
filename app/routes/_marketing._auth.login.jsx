@@ -34,9 +34,10 @@ export async function action({ request }) {
       return await signup(formParsData);
     }
   } catch (error) {
-    if (error.status === 422) {
+    if (error.status === 422 || error.status === 401) {
       return { message: error.message }
     }
+    // return { message: error.message }
 
   }
 

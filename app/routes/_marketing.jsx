@@ -1,6 +1,7 @@
 import { Outlet } from "@remix-run/react";
 import MarketingStyles from '~/styles/marketing.css';
 import MainHeader from "../component/navigation/MainHeader";
+import { getSession, getUserFromSession } from "../data/auth.server";
 
 export default function MarketingPathlessRoute(){
     return(
@@ -9,6 +10,11 @@ export default function MarketingPathlessRoute(){
         <Outlet/>
         </>
     );
+}
+
+
+export async function loader({request}){
+    return await getUserFromSession(request);
 }
 
 export function links(){
