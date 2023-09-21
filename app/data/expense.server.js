@@ -26,7 +26,7 @@ export async function AddExpense(ExpenseData, userId) {
 export async function getExpenses(userId) {
     try {
         const expenses = await prisma.expense.findMany({
-            where: { userId: userId },
+            where: { userId },
             orderBy: { date: 'asc' }
         });
 
