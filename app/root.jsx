@@ -59,7 +59,7 @@ export function ErrorBoundary() {
       <Document title={`${error.statusText} | ${error.status}`}>
       <ErrorMessage title={error.statusText}>
         
-        {console.log(error)}
+        {console.log(error,'here')}
         <p>{`${error.status} | ${error.data || 'Something went wrong'}`}</p>
       </ErrorMessage>
     </Document>
@@ -68,7 +68,7 @@ export function ErrorBoundary() {
     return (
       <Document title={error.name}>
       <ErrorMessage title={error.name}>
-      {console.log(error)}
+      {console.log(error,'there')}
         <p>{error?.message || 'Something went wrongs'}</p>
       </ErrorMessage>
     </Document>

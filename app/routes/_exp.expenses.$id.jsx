@@ -1,7 +1,7 @@
 import {Link, useNavigate} from '@remix-run/react'
 import ExpenseRecordForm from '~/component/expenses/ExpenseForm'
 import Model from '~/component/util/Modal'
-import { deleteExpenseById, getExpensById, updateExpenseById } from '../data/expense.server';
+import { deleteExpenseById, updateExpenseById } from '../data/expense.server';
 import { ValidationCheck } from '../data/errorValidation.server';
 import { Response, redirect } from '@remix-run/node';
 import { guardSessionValidation } from '../data/auth.server';
