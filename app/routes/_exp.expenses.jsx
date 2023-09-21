@@ -3,6 +3,7 @@ import {Link, Outlet, useLoaderData} from '@remix-run/react'
 import ExpensesList from '~/component/expenses/ExpensesList';
 import {FaPlus,FaDownload} from 'react-icons/fa'
 import { getExpenses } from '../data/expense.server';
+import { guardSessionValidation } from '../data/auth.server';
 
 
 export default function Index(){
@@ -42,9 +43,10 @@ export default function Index(){
 }
 
 
-export async function loader(){
+export async function loader({request}){
+   const userId =  await guardSessionValidation(request)
 
-    const expense = await getExpenses();
+    const expense = await getExpenses(userId);
     return expense
 }
 

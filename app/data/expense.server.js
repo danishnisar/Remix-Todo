@@ -1,7 +1,7 @@
 
 import { prisma } from '~/data/database.server';
 
-export async function AddExpense(ExpenseData) {
+export async function AddExpense(ExpenseData, userId) {
 
     try {
 
@@ -9,7 +9,8 @@ export async function AddExpense(ExpenseData) {
             data: {
                 title: ExpenseData.title,
                 amount: +ExpenseData.amount,
-                date: new Date(ExpenseData.date)
+                date: new Date(ExpenseData.date),
+                User: { connect: { id: userId } },
             }
         });
 
@@ -22,11 +23,13 @@ export async function AddExpense(ExpenseData) {
 }
 
 
-export async function getExpenses() {
+export async function getExpenses(userId) {
     try {
         const expenses = await prisma.expense.findMany({
+            where: { userId: userId },
             orderBy: { date: 'asc' }
         });
+
         return expenses
     } catch (error) {
         console.log(error);

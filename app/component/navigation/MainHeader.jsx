@@ -1,5 +1,5 @@
 import Logo from '../util/Logo';
-import { Link, NavLink, useLoaderData } from '@remix-run/react';
+import { Form, Link, NavLink, useLoaderData } from '@remix-run/react';
 
 function MainHeader() {
 
@@ -28,16 +28,11 @@ function MainHeader() {
               </Link>)
             }
             {userInfo &&
-              (<Link to="/" className="cta">
-                Logout 
-                <ul>
-
-                {Object.values(userInfo).map(item => (
-                  <li key={item}>{item}</li>
-                ))}
-                  
-                </ul>
-              </Link>)
+              (
+              <Form method='post' action='/logout' id='logout-form'>
+                <button className="cta">Logout</button>
+              </Form>
+              )
             }
           </li>
         </ul>

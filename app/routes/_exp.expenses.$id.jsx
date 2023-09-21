@@ -4,6 +4,7 @@ import Model from '~/component/util/Modal'
 import { deleteExpenseById, getExpensById, updateExpenseById } from '../data/expense.server';
 import { ValidationCheck } from '../data/errorValidation.server';
 import { Response, redirect } from '@remix-run/node';
+import { guardSessionValidation } from '../data/auth.server';
 
 
 
@@ -36,7 +37,8 @@ export default function ExpenseDynamicIndex(){
 
 
 export async function action({request,params}){
-
+    await guardSessionValidation(request);
+    
     const idD = params.id 
 
     if(request.method === 'PATCH'){

@@ -15,10 +15,9 @@ const sesstionStorage = createCookieSessionStorage({
     }
 });
 
-async function createSesstion(userId,userEmail, redirectUrl) {
+async function createSesstion(userId, userEmail, redirectUrl) {
     const sesstionCookie = await sesstionStorage.getSession();
     sesstionCookie.set('userId', userId);
-    sesstionCookie.set('userEmail',userEmail)
     return redirect(redirectUrl, {
         headers: {
             'Set-Cookie': await sesstionStorage.commitSession(sesstionCookie),
@@ -26,27 +25,39 @@ async function createSesstion(userId,userEmail, redirectUrl) {
     })
 }
 
+export async function guardSessionValidation(request){
+    const userId = await getUserFromSession(request);
+
+    if(!userId){
+        throw redirect('/login');
+    }
+
+    return userId
+
+}
+
 export async function getUserFromSession(request) {
     const session = await sesstionStorage.getSession(request.headers.get('Cookie'));
 
     const userID = session.get('userId')
-    const userEmail = session.get('userEmail')
     if (!userID) {
 
         return null
     }
-    return {userID:userID,userEmail:userEmail};
+    return userID;
 
 
 }
 
-export async function destroySession(request) {
+export async function destroyUserFromSession(request) {
 
-    const sesstionCookie = await sesstionStorage.getSession(request.headers.get('Cookie'))
+    const sesstionCookie = await sesstionStorage.getSession(
+        request.headers.get('Cookie')
+    )
     return redirect('/',
         {
             headers: {
-                'Set-Cookies': await sesstionCookie.sesstionStorage.destroySession()
+                'Set-Cookie': await sesstionStorage.destroySession(sesstionCookie)
             }
         }
     )
@@ -72,7 +83,7 @@ export async function signup({ email, password }) {
         }
     });
 
-    return  createSesstion(user.id,user.email, '/expenses')
+    return createSesstion(user.id, user.email, '/expenses')
 }
 
 export async function singin({ email, password }) {
@@ -94,5 +105,5 @@ export async function singin({ email, password }) {
 
     }
 
-    return  createSesstion(isNotUser.id,isNotUser.email, '/expenses');
+    return createSesstion(isNotUser.id, isNotUser.email, '/expenses');
 }

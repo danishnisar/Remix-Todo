@@ -4,6 +4,7 @@ import Modal from '../component/util/Modal';
 import { AddExpense } from '../data/expense.server';
 import { ValidationCheck } from '../data/errorValidation.server';
 import { redirect } from '@remix-run/node';
+import { guardSessionValidation } from '../data/auth.server';
 
 
 export default function ExpenseAddIndex(){
@@ -25,6 +26,9 @@ export default function ExpenseAddIndex(){
 
 export async function action({request}){
     
+   const userId = await guardSessionValidation(request)
+
+
     let data = await request.formData();
     const expenseData = Object.fromEntries(data);
     try{
@@ -36,7 +40,7 @@ export async function action({request}){
     
         
 
-    await AddExpense(expenseData);
+    await AddExpense(expenseData,userId);
     
     return redirect('/expenses')
 
