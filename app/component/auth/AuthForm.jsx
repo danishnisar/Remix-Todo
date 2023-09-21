@@ -11,7 +11,7 @@ function AuthForm() {
   let authMode = searchParams.get('model') || 'login';
 
   let submitButtonCaption = authMode === 'login' ? 'Login' : 'signup'
-  let toggleButtonCaption = authMode === 'login' ? 'Log in with existing user' : 'Create new user';
+  let toggleButtonCaption = authMode === 'login' ? 'Create new user' : 'Log in with existing user';
 
   const isSubmiting = navigation.state !== 'idle'
   

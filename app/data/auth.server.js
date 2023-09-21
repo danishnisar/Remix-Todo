@@ -15,14 +15,53 @@ const sesstionStorage = createCookieSessionStorage({
     }
 });
 
-async function createSesstion(userId,redirectUrl){
+async function createSesstion(userId, userEmail, redirectUrl) {
     const sesstionCookie = await sesstionStorage.getSession();
-    sesstionCookie.set('userId',userId);
-    return redirect(redirectUrl,{
-        headers:{
+    sesstionCookie.set('userId', userId);
+    return redirect(redirectUrl, {
+        headers: {
             'Set-Cookie': await sesstionStorage.commitSession(sesstionCookie),
         },
     })
+}
+
+export async function guardSessionValidation(request){
+    const userId = await getUserFromSession(request);
+
+    if(!userId){
+        throw redirect('/login');
+    }
+
+    return userId
+
+}
+
+export async function getUserFromSession(request) {
+    const session = await sesstionStorage.getSession(request.headers.get('Cookie'));
+
+    const userID = session.get('userId')
+    if (!userID) {
+
+        return null
+    }
+    return userID;
+
+
+}
+
+export async function destroyUserFromSession(request) {
+
+    const sesstionCookie = await sesstionStorage.getSession(
+        request.headers.get('Cookie')
+    )
+    return redirect('/',
+        {
+            headers: {
+                'Set-Cookie': await sesstionStorage.destroySession(sesstionCookie)
+            }
+        }
+    )
+
 }
 
 export async function signup({ email, password }) {
@@ -36,19 +75,19 @@ export async function signup({ email, password }) {
     }
 
     const hasPassword = await hash(password, 12);
-   
-   const user =  await prisma.user.create({
+
+    const user = await prisma.user.create({
         data: {
             email: email,
             password: hasPassword
         }
     });
-    
-    return createSesstion(user.id,'/expenses')
+
+    return createSesstion(user.id, user.email, '/expenses')
 }
 
-export function singin({ email, password }) {
-    const isNotUser = prisma.user.findFirst({ where: email })
+export async function singin({ email, password }) {
+    const isNotUser = await prisma.user.findFirst({ where: { email } })
 
     if (!isNotUser) {
         const error = new Error('Could not log you in, please check the provided credentialsw');
@@ -57,7 +96,8 @@ export function singin({ email, password }) {
     }
 
 
-    const isValidPassword = compare(password, isNotUser.password);
+    const isValidPassword = await compare(password, isNotUser.password);
+
     if (!isValidPassword) {
         const error = new Error('Could not log you in, please check the provided credentialsw');
         error.status = 401;
@@ -65,5 +105,5 @@ export function singin({ email, password }) {
 
     }
 
-   return createSesstion(isNotUser.id,'/expenses');
+    return createSesstion(isNotUser.id, isNotUser.email, '/expenses');
 }

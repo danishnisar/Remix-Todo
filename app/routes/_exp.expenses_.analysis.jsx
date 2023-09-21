@@ -1,44 +1,47 @@
 import Chart from '~/component/expenses/Chart'
 import ExpenseStatistics from '~/component/expenses/ExpenseStatistics'
 import { getExpenses } from '../data/expense.server';
-import { useLoaderData,useRouteError,isRouteErrorResponse } from '@remix-run/react';
+import { useLoaderData, useRouteError, isRouteErrorResponse } from '@remix-run/react';
 import { json } from '@remix-run/node';
 import Error from '../component/util/Error';
+import { guardSessionValidation } from '../data/auth.server';
 // import styles from '~/styles/expenses.css'
 
 
 
 
-export default function AnalysisIndex(){
+export default function AnalysisIndex() {
     const Expense_Data = useLoaderData();
     return (
         <main>
-            <Chart expenses={Expense_Data}/>
-            <ExpenseStatistics expenses={Expense_Data}/>
+            <Chart expenses={Expense_Data} />
+            <ExpenseStatistics expenses={Expense_Data} />
         </main>
     );
 }
 
-export async function loader(){
-    
-    const expense = await getExpenses();
+export async function loader({ request }) {
 
-    if (!expense || expense.length === 0){
-        throw json({message:'No Data Available'},{
-            status:404,
-            statusText:'No data found'
+    const userId = await guardSessionValidation(request)
+
+    const expense = await getExpenses(userId);
+
+    if (!expense || expense.length === 0) {
+        throw json({ message: 'No Data Available' }, {
+            status: 404,
+            statusText: 'No data found'
         })
     }
     return expense
 }
 
-export function ErrorBoundary(){
+export function ErrorBoundary() {
 
     const error = useRouteError();
-    if(isRouteErrorResponse(error)) {
-        return(
+    if (isRouteErrorResponse(error)) {
+        return (
             <main>
-                 <Error title={error.statusText}>
+                <Error title={error.statusText}>
                     <p>{error.data?.message || 'Not having data for analyzing'}</p>
                 </Error>
             </main>
@@ -53,9 +56,9 @@ export function ErrorBoundary(){
                 </Error>
             </main>
         )
-    }else{
-        
-            return <h1>Unknown Error</h1>;
-          
+    } else {
+
+        return <h1>Unknown Error</h1>;
+
     }
 }
